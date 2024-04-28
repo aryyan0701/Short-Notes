@@ -3,14 +3,67 @@ import React from 'react'
 function Home() {
   return (
     <>
-       <div className="top-0 left-0 flex justify-center items-center w-full h-10 bg-slate-100 p-10 text-black text-2xl font-semibold">Docs</div>
-        <div className="relative w-full h-screen bg-slate-700 text-white">
-          <img className="img-fluid" src="https://niceillustrations.com/wp-content/uploads/2021/05/Note-Taking-color-800px.png" alt="Background"/>
+       <div className="top-0 left-0 flex justify-between items-center w-full h-10 bg-slate-100 p-10 text-black text-xl md:text-2xl font-semibold">
+        Docs
+          <a href="/notes" className='bg-slate-700 rounded-xl p-2 text-slate-100 font-xl md:hover:scale-110 transition-transform duration-300'>Add Yours</a>
+       </div>
+       <div className="relative w-full h-screen bg-slate-700 text-white flex flex-col lg:flex-row">
+      {/* Image Section */}
+      <div className="w-full lg:w-1/2">
+        <img className="img-fluid w-full h-full object-cover" src="https://niceillustrations.com/wp-content/uploads/2021/05/Note-Taking-color-800px.png" alt="Background"/>
+      </div>
+      
+             {/* Card Sections */}
+      <div className="w-full lg:w-1/2 flex flex-col space-y-4 md:flex-row md:space-x-2 md:space-y-0 lg:flex-row lg:space-x-0 lg:space-y-0">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center space-y-8 text-slate-700">
+          <div className="bg-slate-100 p-8 rounded-lg shadow-md md:hover:scale-110 transition-transform duration-100">
+            <h2 className="text-3xl font-semibold mb-4">Platform Features</h2>
+            <ul>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Note-taking functionality
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Easy organization of notes
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Secure data storage
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                User-friendly interface
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="absolute top-0 right-0 h-screen flex flex-col justify-center items-end py-[15rem] px-[10rem]">
-          <div className="text-[7rem] font-semibold tracking-tighter">Short Notes</div>
-          <a href="/notes" className='bg-slate-100 rounded-xl p-3 text-black font-semibold mx-[15rem] hover:scale-110 transition-transform duration-300'>Add Yours</a>
+        
+        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center space-y-8 text-slate-700">
+          <div className="bg-slate-100 p-8 rounded-lg shadow-md md:hover:scale-110 transition-transform duration-100">
+            <h2 className="text-3xl font-semibold mb-4">Social Platforms</h2>
+            <ul>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Facebook
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Twitter
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                Instagram
+              </li>
+              <li className="mb-2">
+                <span className="mr-2">&#8226;</span>
+                LinkedIn
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
+    </div>
     </>
   )
 }
