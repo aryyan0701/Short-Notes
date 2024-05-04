@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { RiDeleteBinLine } from 'react-icons/ri';
+import { motion } from "framer-motion"
+import { useRef } from 'react';
 
 function Background() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,18 +56,24 @@ function Background() {
     setTasks(updatedTasks);
   };
 
+  const ref = useRef(null)
+
   return (
     <>
-      <div className="relative w-full h-screen bg-zinc-800">
+      <div ref={ref} className="relative w-full h-screen bg-zinc-800">
         <h1 className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-[12vw] leading-none tracking-tighter">
           DOCS
         </h1>
-        <button onClick={openModal} className="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+        <button onClick={openModal} className="absolute bottom-20 right-4 bg-blue-500 text-white px-4 py-2 rounded-md">
           Add Task
         </button>
+        <div className="absolute bottom-4 right-4 card w-50 p-4 bg-slate-100 text-black rounded-lg flex">
+          <h2 className="ml-2">Complete task: <span className="text-green-500 ml-2">{20}</span></h2>
+          <h2 className="ml-2">Pending task: <span className="text-green-500 ml-2">{30}</span></h2>
+        </div>
         <div className="flex flex-col p-3">
           {tasks.map((task, index) => (
-            <div key={index} className="bg-gray-200 p-4 rounded-md mb-4 w-80 flex justify-between items-center">
+            <motion.div drag dragConstraints={ref} key={index} className="bg-gray-200 p-4 rounded-md mb-4 w-80 flex justify-between items-center">
               <div>
                 <h3 className="text-lg font-bold">{task.name}</h3>
                 <p className="mb-2">Deadline: {task.timeLimit}</p>
@@ -96,7 +104,7 @@ function Background() {
               <button onClick={() => handleDeleteTask(index)}>
                 <RiDeleteBinLine className="text-red-500" size={24} />
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
