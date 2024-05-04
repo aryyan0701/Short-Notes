@@ -64,10 +64,10 @@ function Background() {
         <h1 className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-[12vw] leading-none tracking-tighter">
           DOCS
         </h1>
-        <button onClick={openModal} className="absolute bottom-20 right-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+        <button onClick={openModal} className="absolute bottom-20 right-10 bg-blue-500 text-white px-4 py-2 rounded-md">
           Add Task
         </button>
-        <div className="absolute bottom-4 right-4 card w-50 p-4 bg-slate-100 text-black rounded-lg flex">
+        <div className="absolute bottom-4 right-10 card w-50 p-4 bg-slate-100 text-black rounded-lg flex">
           <h2 className="ml-2">Complete task: <span className="text-green-500 ml-2">{20}</span></h2>
           <h2 className="ml-2">Pending task: <span className="text-green-500 ml-2">{30}</span></h2>
         </div>
@@ -135,7 +135,7 @@ function Background() {
                   className="border-gray-300 border rounded-md px-3 py-1 w-full"
                 />
               </div>
-              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Create</button>
+              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Add</button>
               <button onClick={closeModal} className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Close</button>
             </form>
           </div>
