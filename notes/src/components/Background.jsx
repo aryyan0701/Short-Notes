@@ -58,17 +58,25 @@ function Background() {
                 <p className="mb-2">Deadline: {task.timeLimit}</p>
                 <div>
                   {task.complete ? (
-                    <IoCheckmarkCircle
-                      className="text-green-500"
-                      size={24}
-                      onClick={() => handleToggleComplete(index)}
-                    />
+                       <>
+                       <div className="flex">
+                       <IoCheckmarkCircle
+                         className="text-green-500"
+                         size={24}
+                         onClick={() => handleToggleComplete(index)}
+                       />
+                       <span className="text-green-500 ml-2">Done</span>
+                       </div>
+                     </>
                   ) : (
-                    <IoCheckmarkCircleOutline
+                    <div className="flex">
+                      <IoCheckmarkCircleOutline
                       className="text-gray-500"
                       size={24}
                       onClick={() => handleToggleComplete(index)}
-                    />
+                    /><span className="text-gray-500 ml-2">Pending</span>
+                    </div>
+                  
                   )}
                 </div>
               </div>
