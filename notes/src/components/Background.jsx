@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
@@ -7,6 +7,19 @@ function Background() {
   const [taskName, setTaskName] = useState('');
   const [timeLimitation, setTimeLimitation] = useState('');
   const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    // Load tasks from sessionStorage when component mounts
+    const savedTasks = JSON.parse(sessionStorage.getItem('tasks'));
+    if (savedTasks && savedTasks.length > 0) {
+      setTasks(savedTasks);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save tasks to sessionStorage whenever tasks change
+    sessionStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -21,7 +34,7 @@ function Background() {
     const newTask = {
       name: taskName,
       timeLimit: timeLimitation,
-      complete: false, // Initialize completion status to false
+      complete: false,
     };
     setTasks([newTask, ...tasks]);
     setTaskName('');
@@ -114,8 +127,8 @@ function Background() {
                   className="border-gray-300 border rounded-md px-3 py-1 w-full"
                 />
               </div>
-              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
-              <button onClick={closeModal} className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Cancel</button>
+              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Create</button>
+              <button onClick={closeModal} className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Close</button>
             </form>
           </div>
         </div>
