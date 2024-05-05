@@ -10,7 +10,7 @@ function Notespage() {
   const [taskName, setTaskName] = useState('');
   const [timeLimitation, setTimeLimitation] = useState('');
   const [tasks, setTasks] = useState([]);
-  const [editIndex, setEditIndex] = useState(null); // To track the index of the task being edited
+  const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
     // Load tasks from sessionStorage when component mounts
@@ -27,16 +27,14 @@ function Notespage() {
 
   const openModal = (index) => {
     if (typeof index === 'number') {
-      // If an index is provided, it means the modal is being opened for editing
       setEditIndex(index);
       const task = tasks[index];
       setTaskName(task.name);
       setTimeLimitation(task.timeLimit);
     } else {
-      // If no index is provided, it means the modal is being opened for adding a new task
-      setEditIndex(null); // Clear edit index
-      setTaskName(''); // Clear taskName
-      setTimeLimitation(''); // Clear timeLimitation
+      setEditIndex(null); 
+      setTaskName(''); 
+      setTimeLimitation(''); 
     }
     setIsModalOpen(true);
   };
@@ -44,13 +42,12 @@ function Notespage() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setEditIndex(null); // Clear edit index when closing the modal
+    setEditIndex(null); 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editIndex !== null) {
-      // If editIndex is not null, it means we're editing an existing task
       const updatedTasks = [...tasks];
       updatedTasks[editIndex] = {
         name: taskName,
@@ -59,7 +56,6 @@ function Notespage() {
       };
       setTasks(updatedTasks);
     } else {
-      // If editIndex is null, it means we're adding a new task
       const newTask = {
         name: taskName,
         timeLimit: timeLimitation,
@@ -108,7 +104,7 @@ function Notespage() {
         <button onClick={openModal} className="absolute bottom-28 right-10 bg-blue-600 text-white text-xl px-4 py-2 rounded-md">
           Add Task
         </button>
-        <div className="absolute bottom-3 right-10 card w-50 p-4 bg-slate-100 text-black text-[20px] font-bold rounded-lg">
+        <div className="absolute bottom-3 right-8 card w-50 p-4 bg-slate-100 text-black text-[20px] font-bold rounded-lg">
           <h2 className="ml-2">Completed tasks: <span className="text-green-500">{completeTasksCount}</span></h2>
           <h2 className="ml-2">Pending tasks: <span className="text-gray-500">{pendingTasksCount}</span></h2>
         </div>
