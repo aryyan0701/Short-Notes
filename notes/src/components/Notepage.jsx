@@ -59,13 +59,11 @@ function Notespage() {
   const ref = useRef(null)
   return (
   <>
-  {/* <Background/> */}
-
   <div ref={ref} className="relative w-full h-screen bg-zinc-800">
         <h1 className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-[12vw] leading-none tracking-tighter">
           DOCS
         </h1>
-        <button onClick={openModal} className="absolute bottom-20 right-10 bg-blue-500 text-white px-4 py-2 rounded-md">
+        <button onClick={openModal} className="absolute bottom-20 right-10 bg-blue-600 text-white text-xl px-4 py-2 rounded-md">
           Add Task
         </button>
         <div className="absolute bottom-4 right-10 card w-50 p-4 bg-slate-100 text-black rounded-lg flex">
@@ -113,7 +111,7 @@ function Notespage() {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-2xl mb-4">Add Task</h2>
+            <h2 className="text-2xl mb-4 text-center font-semibold">Add Task</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="taskName" className="block mb-1">Task Name:</label>
@@ -122,7 +120,7 @@ function Notespage() {
                   id="taskName"
                   value={taskName}
                   onChange={(e) => setTaskName(e.target.value)}
-                  className="border-gray-300 border rounded-md px-3 py-1 w-full"
+                  className="border-gray-300 border rounded-md px-3 py-1 w-[25rem]"
                   required
                 />
               </div>
@@ -133,10 +131,10 @@ function Notespage() {
                   id="timeLimitation"
                   value={timeLimitation}
                   onChange={(e) => setTimeLimitation(e.target.value)}
-                  className="border-gray-300 border rounded-md px-3 py-1 w-full"
+                  className="border-gray-300 border rounded-md px-3 py-1 w-[25rem]"
                 />
               </div>
-              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Add</button>
+              <button type="submit" className="bg-zinc-800 text-white px-4 py-2 rounded-md">Add</button>
               <button onClick={closeModal} className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Close</button>
             </form>
           </div>
