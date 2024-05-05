@@ -3,12 +3,14 @@ import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { motion } from "framer-motion"
 import { useRef } from 'react';
+import { FaEdit } from "react-icons/fa";
 
 function Notespage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskName, setTaskName] = useState('');
   const [timeLimitation, setTimeLimitation] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [editIndex, setEditIndex] = useState(null); // To track the index of the task being edited
 
   useEffect(() => {
     // Load tasks from sessionStorage when component mounts
@@ -23,26 +25,54 @@ function Notespage() {
     sessionStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  const openModal = () => {
+  const openModal = (index) => {
+    if (typeof index === 'number') {
+      // If an index is provided, it means the modal is being opened for editing
+      setEditIndex(index);
+      const task = tasks[index];
+      setTaskName(task.name);
+      setTimeLimitation(task.timeLimit);
+    } else {
+      // If no index is provided, it means the modal is being opened for adding a new task
+      setEditIndex(null); // Clear edit index
+      setTaskName(''); // Clear taskName
+      setTimeLimitation(''); // Clear timeLimitation
+    }
     setIsModalOpen(true);
   };
+  
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setEditIndex(null); // Clear edit index when closing the modal
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTask = {
-      name: taskName,
-      timeLimit: timeLimitation,
-      complete: false,
-    };
-    setTasks([newTask, ...tasks]);
+    if (editIndex !== null) {
+      // If editIndex is not null, it means we're editing an existing task
+      const updatedTasks = [...tasks];
+      updatedTasks[editIndex] = {
+        name: taskName,
+        timeLimit: timeLimitation,
+        complete: updatedTasks[editIndex].complete,
+      };
+      setTasks(updatedTasks);
+    } else {
+      // If editIndex is null, it means we're adding a new task
+      const newTask = {
+        name: taskName,
+        timeLimit: timeLimitation,
+        complete: false,
+      };
+      setTasks([newTask, ...tasks]);
+    }
     setTaskName('');
     setTimeLimitation('');
     closeModal();
   };
+  
+  
 
   const handleToggleComplete = (index) => {
     const updatedTasks = [...tasks];
@@ -56,19 +86,31 @@ function Notespage() {
     setTasks(updatedTasks);
   };
 
-  const ref = useRef(null)
+  const handleEditTask = (index) => {
+    setEditIndex(index);
+    const task = tasks[index];
+    setTaskName(task.name);
+    setTimeLimitation(task.timeLimit);
+    setIsModalOpen(true); 
+  };
+
+  const ref = useRef(null);
+
+  const completeTasksCount = tasks.filter(task => task.complete).length;
+  const pendingTasksCount = tasks.filter(task => !task.complete).length;
+
   return (
-  <>
-  <div ref={ref} className="relative w-full h-screen bg-zinc-800">
+    <>
+      <div ref={ref} className="relative w-full h-screen bg-zinc-800 flex flex-wrap justify-start">
         <h1 className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-[12vw] leading-none tracking-tighter">
           DOCS
         </h1>
-        <button onClick={openModal} className="absolute bottom-20 right-10 bg-blue-600 text-white text-xl px-4 py-2 rounded-md">
+        <button onClick={openModal} className="absolute bottom-28 right-10 bg-blue-600 text-white text-xl px-4 py-2 rounded-md">
           Add Task
         </button>
-        <div className="absolute bottom-4 right-10 card w-50 p-4 bg-slate-100 text-black rounded-lg flex">
-          <h2 className="ml-2">Complete task: <span className="text-green-500 ml-2">{20}</span></h2>
-          <h2 className="ml-2">Pending task: <span className="text-green-500 ml-2">{30}</span></h2>
+        <div className="absolute bottom-3 right-10 card w-50 p-4 bg-slate-100 text-black text-[20px] font-bold rounded-lg">
+          <h2 className="ml-2">Completed tasks: <span className="text-green-500">{completeTasksCount}</span></h2>
+          <h2 className="ml-2">Pending tasks: <span className="text-gray-500">{pendingTasksCount}</span></h2>
         </div>
         <div className="flex flex-col p-3">
           {tasks.map((task, index) => (
@@ -78,31 +120,36 @@ function Notespage() {
                 <p className="mb-2">Deadline: {task.timeLimit}</p>
                 <div>
                   {task.complete ? (
-                       <>
-                       <div className="flex">
-                       <IoCheckmarkCircle
-                         className="text-green-500"
-                         size={24}
-                         onClick={() => handleToggleComplete(index)}
-                       />
-                       <span className="text-green-500 ml-2">Done</span>
-                       </div>
-                     </>
+                    <>
+                      <div className="flex">
+                        <IoCheckmarkCircle
+                          className="text-green-500"
+                          size={24}
+                          onClick={() => handleToggleComplete(index)}
+                        />
+                        <span className="text-green-500 ml-2">Done</span>
+                      </div>
+                    </>
                   ) : (
                     <div className="flex">
                       <IoCheckmarkCircleOutline
-                      className="text-gray-500"
-                      size={24}
-                      onClick={() => handleToggleComplete(index)}
-                    /><span className="text-gray-500 ml-2">Pending</span>
+                        className="text-gray-500"
+                        size={24}
+                        onClick={() => handleToggleComplete(index)}
+                      />
+                      <span className="text-gray-500 ml-2">Pending</span>
                     </div>
-                  
                   )}
                 </div>
               </div>
-              <button onClick={() => handleDeleteTask(index)}>
-                <RiDeleteBinLine className="text-red-500" size={24} />
-              </button>
+              <div className='flex'>
+                <button onClick={() => handleEditTask(index)} className='me-2'>
+                  <FaEdit className="text-green-500" size={24} />
+                </button>
+                <button onClick={() => handleDeleteTask(index)}>
+                  <RiDeleteBinLine className="text-red-500" size={24} />
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -111,7 +158,7 @@ function Notespage() {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-2xl mb-4 text-center font-semibold">Add Task</h2>
+            <h2 className="text-2xl mb-4 text-center font-semibold">{editIndex !== null ? 'Edit Task' : 'Add Task'}</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="taskName" className="block mb-1">Task Name:</label>
@@ -134,14 +181,14 @@ function Notespage() {
                   className="border-gray-300 border rounded-md px-3 py-1 w-[25rem]"
                 />
               </div>
-              <button type="submit" className="bg-zinc-800 text-white px-4 py-2 rounded-md">Add</button>
+              <button type="submit" className="bg-zinc-800 text-white px-4 py-2 rounded-md">{editIndex !== null ? 'Save' : 'Add'}</button>
               <button onClick={closeModal} className="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Close</button>
             </form>
           </div>
         </div>
       )}
-  </>
+    </>
   )
 }
 
-export default Notespage
+export default Notespage;
